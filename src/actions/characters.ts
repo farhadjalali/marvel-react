@@ -18,6 +18,8 @@ export namespace CharacterActions {
         GET_HERO_COMICS_REQUEST = 'GET_HERO_COMICS_REQUEST',
         GET_HERO_COMICS_SUCCESS = 'GET_HERO_COMICS_SUCCESS',
         GET_HERO_COMICS_FAILED = 'GET_HERO_COMICS_FAILED',
+
+        SET_SEARCH_NAME = 'SET_SEARCH_NAME',
     }
 
     // export const setHeroSearchName = createAction(Type.SET_HERO_SEARCH_NAME);
@@ -25,17 +27,18 @@ export namespace CharacterActions {
     /**
      * Return heroes based on options
      */
-    export const getHeroes = (options: GetCharactersOptions) => async (dispatch: Dispatch) => {
+    export const getHeroes = (options: GetCharactersOptions) => async (dispatch: Dispatch, getState: () => RootState) => {
         dispatch({
             type: Type.GET_HEROES_REQUEST,
         });
 
         try {
+            options.search = getState().marvel.heroes.searchName;
             const response = await fetchCharactersList(options);
             const res = await response.json();
             dispatch({
                 type: Type.GET_HEROES_SUCCESS,
-                payload: res.data.results as Character[]
+                payload: res.data
             });
         } catch (err) {
             dispatch({
@@ -50,20 +53,25 @@ export namespace CharacterActions {
      */
     export const getMoreHeroes = () => (dispatch: Dispatch, getState: () => RootState) => {
         const state = getState();
-        return getHeroes({offset: state.characters.heroes.items.length})(dispatch);
+        return getHeroes({offset: state.marvel.heroes.items.length})(dispatch, getState);
     }
 
     /**
      * Return characters with names that begin with the specified string (e.g. Sp).
      */
-    export const getHeroesByNameStart = (searchName: string) => async (dispatch: Dispatch) => {
-        return getHeroes({search: searchName})(dispatch);
+    export const getHeroesByNameStart = (searchName: string) => async (dispatch: Dispatch, getState: () => RootState) => {
+        dispatch({
+            type: Type.SET_SEARCH_NAME,
+            payload: searchName
+        })
+
+        return getHeroes({})(dispatch, getState);
     }
 
     /**
      * ASYNC : Return hero by id from API
      */
-    export const getHeroById = (heroId: number) => async (dispatch: Dispatch) => {
+    export const getHeroById = (heroId: number, ready: () => void) => async (dispatch: Dispatch) => {
         dispatch({
             type: Type.GET_HERO_REQUEST,
         });
@@ -75,6 +83,7 @@ export namespace CharacterActions {
                 type: Type.GET_HERO_SUCCESS,
                 payload: (res.data.results as Character[])[0]
             })
+            ready();
         } catch (err) {
             dispatch({
                 type: Type.GET_HERO_FAILED,

@@ -1,7 +1,7 @@
 import {HeroesModel, HeroModel} from '../types';
 
 export interface RootState {
-    characters: RootState.CharactersState;
+    marvel: RootState.CharactersState;
 }
 
 export namespace RootState {

@@ -6,10 +6,12 @@
   .character-card-thumbnail {
     height: 300px;
     border-bottom: 5px solid var(--color-red);
+    overflow: hidden;
 
     img {
       width: 100%;
       height: 100%;
+      transition: transform .3s;
       object-fit: fill;
     }
   }
@@ -30,6 +32,7 @@
 
   &:hover {
     img {
+      transform: scale(1.2);
     }
 
     .character-card-body {

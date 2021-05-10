@@ -3,7 +3,7 @@ import charactersReducer from "./characters";
 import {RootState} from "./state";
 
 const rootReducer = combineReducers<RootState>({
-    characters: charactersReducer,
+    marvel: charactersReducer,
 })
 
 export default rootReducer

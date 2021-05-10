@@ -7,7 +7,10 @@ const initialState: RootState.CharactersState = {
     heroes: {
         items: [],
         loading: false,
-        hasMore: false
+        hasMore: false,
+        count: 0,
+        offset: 0,
+        searchName: ""
     },
     hero: {
         comics: [],
@@ -21,9 +24,24 @@ const charactersReducer = handleActions<RootState.CharactersState, any>({
      * Get Heroes success response
      */
     [CharacterActions.Type.GET_HEROES_SUCCESS]: (state, action) => {
+        const {results, count, limit, offset, total} = action.payload
+
+        let items: Character[];
+        if (offset > 0) // after load more
+            items = [...state.heroes.items, ...results]
+        else
+            items = results
+
         return {
             ...state,
-            heroes: {loading: false, items: action.payload as Character[], hasMore: true}
+            heroes: {
+                ...state.heroes,
+                loading: false,
+                items: items,
+                count: count,
+                offset: offset,
+                hasMore: Boolean(total > offset + count)
+            }
         }
     },
 
@@ -34,9 +52,8 @@ const charactersReducer = handleActions<RootState.CharactersState, any>({
         return {
             ...state,
             heroes: {
-                loading: true,
-                hasMore: false,
-                items: state.heroes.items // To present the already previously loaded heroes
+                ...state.heroes,
+                loading: true
             }
         }
     },
@@ -47,7 +64,10 @@ const charactersReducer = handleActions<RootState.CharactersState, any>({
     [CharacterActions.Type.GET_HEROES_FAILED]: (state) => {
         return {
             ...state,
-            heroes: {loading: false, items: [], hasMore: true}
+            heroes: {
+                ...state.heroes,
+                loading: false
+            }
         }
     },
 
@@ -57,7 +77,11 @@ const charactersReducer = handleActions<RootState.CharactersState, any>({
     [CharacterActions.Type.GET_HERO_REQUEST]: (state) => {
         return {
             ...state,
-            hero: {loading: true, comicsLoading: false, comics: []},
+            hero: {
+                loading: true,
+                comicsLoading: false,
+                comics: []
+            },
         }
     },
 
@@ -67,7 +91,12 @@ const charactersReducer = handleActions<RootState.CharactersState, any>({
     [CharacterActions.Type.GET_HERO_SUCCESS]: (state, action) => {
         return {
             ...state,
-            hero: {loading: false, current: action.payload as Character, comicsLoading: false, comics: []}
+            hero: {
+                loading: false,
+                current: action.payload as Character,
+                comicsLoading: false,
+                comics: []
+            }
         }
     },
 
@@ -120,7 +149,21 @@ const charactersReducer = handleActions<RootState.CharactersState, any>({
                 comics: []
             }
         }
-    }
+    },
+
+    /**
+     * Set search name
+     */
+    [CharacterActions.Type.SET_SEARCH_NAME]: (state, action) => {
+        return {
+            ...state,
+            heroes: {
+                ...state.heroes,
+                searchName: action.payload
+            }
+        }
+    },
+
 }, initialState)
 
 export default charactersReducer
