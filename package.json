@@ -1,5 +1,5 @@
 {
-  "name": "marvel",
+  "name": "react-marvel",
   "version": "0.1.0",
   "engines": {
     "node": "14.x"

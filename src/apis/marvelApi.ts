@@ -11,6 +11,8 @@ const CHARACTERS_LOAD_LIMIT = 20
 export function fetchCharactersList(options: GetCharactersOptions = {}): Promise<Response> {
     options = {offset: 0, limit: CHARACTERS_LOAD_LIMIT, ...options}
 
+    // options.page === 1 ? 0 : (options.count * (options.page - 1));
+
     let params = getAuthorizationParams() + `&offset=${options.offset}&limit=${options.limit}`;
 
     if (options.search)
