@@ -118,6 +118,6 @@ export namespace CharacterActions {
 
 export type CharacterActions = Omit<typeof CharacterActions, 'Type'>;
 export const useCharacterActions = (dispatch: Dispatch) => {
-    const {Type, ...actions} = CharacterActions;
+    const {...actions} = CharacterActions;
     return useMemo(() => bindActionCreators(actions as any, dispatch), [dispatch]) as CharacterActions;
 };

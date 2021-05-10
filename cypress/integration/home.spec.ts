@@ -50,7 +50,7 @@ describe("Hero cards", () => {
     })
 
     it('Check redirect after click first cards', () => {
-        cy.get('.character-card:first-child').click()
+        cy.get('.character-card').first().click()
         cy.location('pathname').should('match', /\/superhero\/\d+/)
     })
 })

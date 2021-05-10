@@ -3,7 +3,7 @@ import {useParams} from 'react-router';
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../store/state";
 import {CharacterActions} from "../../actions";
-import {Comic, HeroModel} from "../../types";
+import {Comic} from "../../types";
 import ComicCard from "./ComicCard/ComicCard";
 import ComicModal from "./ComicModal/ComicModal";
 import "./Superhero.scss";

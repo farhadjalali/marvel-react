@@ -14,18 +14,16 @@ env.config();
 const store = configureStore();
 
 render(
-    <React.StrictMode>
-        <Provider store={store}>
-            <Router>
-                <App>
-                    <Switch>
-                        <Route exact path="/" component={Home}/>
-                        <Route path="/superhero/:id" component={Superhero}/>
-                    </Switch>
-                </App>
-            </Router>
-        </Provider>
-    </React.StrictMode>,
+    <Provider store={store}>
+        <Router>
+            <App>
+                <Switch>
+                    <Route exact path="/" component={Home}/>
+                    <Route path="/superhero/:id" component={Superhero}/>
+                </Switch>
+            </App>
+        </Router>
+    </Provider>,
     document.getElementById('root')
 );
 
