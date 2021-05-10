@@ -1,6 +1,6 @@
 import {combineReducers} from 'redux'
-import charactersReducer from "./characters";
-import {RootState} from "./state";
+import charactersReducer from "./marvel";
+import {RootState} from "../store/state";
 
 const rootReducer = combineReducers<RootState>({
     marvel: charactersReducer,

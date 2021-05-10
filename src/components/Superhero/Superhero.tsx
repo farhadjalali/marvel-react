@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {useParams} from 'react-router';
 import {useDispatch, useSelector} from "react-redux";
-import {RootState} from "../../reducers/state";
+import {RootState} from "../../store/state";
 import {CharacterActions} from "../../actions";
 import {Comic, HeroModel} from "../../types";
 import ComicCard from "./ComicCard/ComicCard";

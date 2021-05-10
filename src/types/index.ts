@@ -1,3 +1,4 @@
-export * from './HeroesModel';
-export * from './HeroModel';
+export * from './models/HeroesModel';
+export * from './models/HeroModel';
 export * from './global';
+

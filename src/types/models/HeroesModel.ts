@@ -1,4 +1,4 @@
-import {Character} from "./global";
+import {Character} from "../global";
 
 export interface HeroesModel {
     items: Character[];

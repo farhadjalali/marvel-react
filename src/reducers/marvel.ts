@@ -1,5 +1,5 @@
 import {handleActions} from 'redux-actions';
-import {RootState} from "./state";
+import {RootState} from "../store/state";
 import {CharacterActions} from "../actions";
 import {Character, Comic} from "../types";
 

@@ -1,4 +1,4 @@
-import {Character, Comic} from "./global";
+import {Character, Comic} from "../global";
 
 export interface HeroModel {
     current?: Character;

@@ -1,4 +1,4 @@
-import {RootState} from "../reducers/state";
+import {RootState} from "./state";
 import {Store, applyMiddleware, createStore} from "redux";
 import {logger, thunk} from "../middleware";
 import {composeWithDevTools} from 'redux-devtools-extension';

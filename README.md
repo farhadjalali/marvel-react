@@ -1,6 +1,10 @@
 # Marvel API React App
 
-## How to run the project
+## Other documents:
+* `/docs/PROJECT-STRUCTURE.md`
+* `/docs/PROJECT-STRATEGY.md`
+
+## How to run
 
 Install dependencies:
 
@@ -23,5 +27,5 @@ npm test
 Run Cypress tests
 
 ```shell
-npm run test:e2e
+npm run test:cypress
 ```

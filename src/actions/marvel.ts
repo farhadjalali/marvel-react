@@ -3,7 +3,7 @@ import {useMemo} from "react";
 import {Dispatch, bindActionCreators} from "redux";
 import {fetchCharacterById, fetchCharactersList, fetchComicsByCharacter} from "../apis";
 import {Character, Comic, GetCharactersOptions} from "../types";
-import {RootState} from "../reducers/state";
+import {RootState} from "../store/state";
 
 export namespace CharacterActions {
     export enum Type {
@@ -21,8 +21,6 @@ export namespace CharacterActions {
 
         SET_SEARCH_NAME = 'SET_SEARCH_NAME',
     }
-
-    // export const setHeroSearchName = createAction(Type.SET_HERO_SEARCH_NAME);
 
     /**
      * Return heroes based on options
@@ -114,6 +112,8 @@ export namespace CharacterActions {
             })
         }
     }
+
+    // export const setHeroSearchName = createAction(Type.SET_HERO_SEARCH_NAME);
 }
 
 export type CharacterActions = Omit<typeof CharacterActions, 'Type'>;
