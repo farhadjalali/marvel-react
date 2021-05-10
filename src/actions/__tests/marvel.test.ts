@@ -26,8 +26,9 @@ describe('async actions', () => {
 
         const store = mockStore({data: {offset: 0}})
         return store.dispatch(actions.CharacterActions.getHeroes({} as GetCharactersOptions) as any).then(() => {
-            // return of async actions
-            expect(store.getActions()).toEqual(expectedActions)
+            const returnedActions = store.getActions()
+            expect(returnedActions[0]).toEqual(expectedActions[0])
+            expect(returnedActions[1].type).toEqual(expectedActions[1].type)
         })
     })
 });

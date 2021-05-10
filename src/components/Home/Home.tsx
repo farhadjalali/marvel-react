@@ -19,7 +19,7 @@ export default function Home(): JSX.Element {
         dispatch(CharacterActions.getHeroes({}));
     }, []);
 
-    function searchInputEnterPressed(ev: any) {
+    function searchInputEnterPressed(ev: React.KeyboardEvent) {
         if (ev.code == KEY_ENTER) {
             dispatch(CharacterActions.getHeroesByNameStart(searchName));
         }

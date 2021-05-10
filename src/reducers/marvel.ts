@@ -19,12 +19,12 @@ const initialState: RootState.CharactersState = {
     }
 }
 
-const charactersReducer = handleActions<RootState.CharactersState, any>({
+const charactersReducer = handleActions<RootState.CharactersState, unknown>({
     /**
      * Get Heroes success response
      */
     [CharacterActions.Type.GET_HEROES_SUCCESS]: (state, action) => {
-        const {results, count, offset, total} = action.payload
+        const {results, count, offset, total} = action.payload as { results: [], count: number, offset: number, total: number }
 
         let items: Character[];
         if (offset > 0) // after load more
@@ -164,7 +164,7 @@ const charactersReducer = handleActions<RootState.CharactersState, any>({
             ...state,
             heroes: {
                 ...state.heroes,
-                searchName: action.payload
+                searchName: action.payload as string
             }
         }
     },

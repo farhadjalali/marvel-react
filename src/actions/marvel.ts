@@ -1,9 +1,10 @@
-import {useMemo} from "react";
-import {Dispatch, bindActionCreators} from "redux";
+import {Dispatch} from "redux";
 import {fetchCharacterById, fetchCharactersList, fetchComicsByCharacter} from "../apis";
 import {Character, Comic, GetCharactersOptions} from "../types";
 import {RootState} from "../store/state";
 // import {createAction} from 'redux-actions';
+// import {useMemo} from "react";
+// import {bindActionCreators} from "redux";
 
 export namespace CharacterActions {
     export enum Type {
@@ -116,8 +117,9 @@ export namespace CharacterActions {
     // export const setHeroSearchName = createAction(Type.SET_HERO_SEARCH_NAME);
 }
 
-export type CharacterActions = Omit<typeof CharacterActions, 'Type'>;
-export const useCharacterActions = (dispatch: Dispatch) => {
-    const {...actions} = CharacterActions;
-    return useMemo(() => bindActionCreators(actions as any, dispatch), [dispatch]) as CharacterActions;
-};
+/** These lines of code will be useful if there will be none async actions */
+// export type CharacterActions = Omit<typeof CharacterActions, 'Type'>;
+// export const useCharacterActions = (dispatch: Dispatch) => {
+//     const {...actions} = CharacterActions;
+//     return useMemo(() => bindActionCreators(actions as any, dispatch), [dispatch]) as CharacterActions;
+// };
