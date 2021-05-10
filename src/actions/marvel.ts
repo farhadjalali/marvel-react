@@ -1,9 +1,9 @@
-import {createAction} from 'redux-actions';
 import {useMemo} from "react";
 import {Dispatch, bindActionCreators} from "redux";
 import {fetchCharacterById, fetchCharactersList, fetchComicsByCharacter} from "../apis";
 import {Character, Comic, GetCharactersOptions} from "../types";
 import {RootState} from "../store/state";
+// import {createAction} from 'redux-actions';
 
 export namespace CharacterActions {
     export enum Type {

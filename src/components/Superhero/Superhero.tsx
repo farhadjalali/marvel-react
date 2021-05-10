@@ -8,56 +8,57 @@ import ComicCard from "./ComicCard/ComicCard";
 import ComicModal from "./ComicModal/ComicModal";
 import "./Superhero.scss";
 import {thumbnailFilename} from "../../utils";
+import {Spinner} from "../_utils/Spinner";
+import {SpinnerContainer} from "../_utils/SpinnerContainer";
 
 export default function Superhero(): JSX.Element | null {
     const {id} = useParams<{ id: string }>();
     const marvel = useSelector((state: RootState) => state.marvel)
     const dispatch = useDispatch();
-    const [hero, setHero] = useState<HeroModel>()
     const [modalComic, setModalComic] = useState<Comic>();
 
     useEffect(() => {
-        // If user comes from home page the hero basic information already is ready, otherwise we need to reload it from API
-        const alreadyLoadedHero = marvel.heroes.items.find(hero => hero.id === +id);
-        if (alreadyLoadedHero) {
-            setHero({
-                ...marvel.hero,
-                current: alreadyLoadedHero,
-                comics: []
-            })
+        dispatch(CharacterActions.getHeroById(+id, () => {
             dispatch(CharacterActions.getHeroComics(+id));
-        } else {
-            dispatch(CharacterActions.getHeroById(+id, () => {
-                setHero(marvel.hero)
-                dispatch(CharacterActions.getHeroComics(+id));
-            }));
-        }
+        }));
 
-    }, [hero?.current]);
+    }, []);
 
-    if (!hero || !hero.current)
+    if (!marvel.hero || !marvel.hero.current)
         return null;
 
     return (
         <div className="superhero-page">
             {/* Head */}
-            <div className="superhero-page-head bg-black p-3 w-100 d-flex align-items-center justify-content-center">
-                <h2 className="text-white px-4">{hero.current.name}</h2>
-                <img className="hero-head-thumbnail" src={thumbnailFilename(hero.current.thumbnail)} alt={'thumbnail'}/>
+            <div className="superhero-page-head bg-black p-5 w-100 d-flex flex-column flex-md-row align-items-center justify-content-center">
+                <h2 className="text-white px-4">{marvel.hero.current.name}</h2>
+                <img className="hero-head-thumbnail" src={thumbnailFilename(marvel.hero.current.thumbnail)} alt={'thumbnail'}/>
             </div>
-            <svg preserveAspectRatio="none" viewBox="0 0 100 6">
+            <svg className="d-none d-sm-block" preserveAspectRatio="none" viewBox="0 0 100 6">
                 <polygon points="0,0 100,0 0,6"/>
             </svg>
 
             {/* comics cards */}
-            <h2 className="px-4 mt-3 text-secondary">COMICS</h2>
-            <div className="p-2 d-flex flex-wrap">
-                {
-                    marvel.hero.comics.map(comic =>
-                        <ComicCard onClick={() => setModalComic(comic)} comic={comic} key={comic.id}/>
-                    )
-                }
-            </div>
+            <h2 className="px-5 my-3 text-secondary">COMICS</h2>
+
+            {
+                marvel.hero.comicsLoading ?
+                    <SpinnerContainer>
+                        <Spinner/>
+                    </SpinnerContainer>
+                    :
+                    <div className="row px-4 m-0">
+                        {
+                            marvel.hero.comics.map(comic =>
+                                <div className="col-xl-2 col-lg-3 col-md-4 col-sm-6"
+                                     key={comic.id}>
+                                    <ComicCard onClick={() => setModalComic(comic)}
+                                               comic={comic}/>
+                                </div>
+                            )
+                        }
+                    </div>
+            }
 
             {/* comic modal */}
             <ComicModal comic={modalComic} onHide={() => setModalComic(undefined)}/>

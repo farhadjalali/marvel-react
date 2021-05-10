@@ -21,11 +21,11 @@ export namespace CharacterCard {
 
 export default function SuperheroCard({character}: CharacterCard.Props): JSX.Element {
     return (
-        <div className="character-card px-2 py-2 d-sm-block">
+        <div className="character-card w-100 py-2">
             <Link to={`superhero/${character.id}`}>
                 <div className="d-flex flex-column">
                     <div className="character-card-thumbnail">
-                        <img
+                        <img className="w-100 h-100"
                             src={character.thumbnail.path + '.' + character.thumbnail.extension}
                             alt={'thumbnail'}/>
                     </div>

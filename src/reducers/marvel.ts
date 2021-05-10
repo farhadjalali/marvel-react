@@ -24,7 +24,7 @@ const charactersReducer = handleActions<RootState.CharactersState, any>({
      * Get Heroes success response
      */
     [CharacterActions.Type.GET_HEROES_SUCCESS]: (state, action) => {
-        const {results, count, limit, offset, total} = action.payload
+        const {results, count, offset, total} = action.payload
 
         let items: Character[];
         if (offset > 0) // after load more
@@ -106,7 +106,11 @@ const charactersReducer = handleActions<RootState.CharactersState, any>({
     [CharacterActions.Type.GET_HERO_FAILED]: (state) => {
         return {
             ...state,
-            hero: {loading: false, comicsLoading: false, comics: []}
+            hero: {
+                loading: false,
+                comicsLoading: false,
+                comics: []
+            }
         }
     },
 
@@ -118,6 +122,7 @@ const charactersReducer = handleActions<RootState.CharactersState, any>({
             ...state,
             hero: {
                 ...state.hero,
+                comics: [],
                 comicsLoading: true
             }
         }

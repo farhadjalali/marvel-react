@@ -21,7 +21,7 @@ function comicCreators(comic: Comic) {
 export default function ComicCard({comic, onClick}: ComicCard.Props): JSX.Element {
     return (
         <a onClick={onClick}
-           className="comic-card m-3">
+           className="comic-card">
             <div className="d-flex flex-column">
                 <img src={comic.thumbnail.path + '.' + comic.thumbnail.extension}
                      alt="thumbnail"/>
@@ -30,7 +30,7 @@ export default function ComicCard({comic, onClick}: ComicCard.Props): JSX.Elemen
                     <div className="font-weight-bold text-dark py-2">
                         {comic.title}
                     </div>
-                    <div className="text-dark">
+                    <div className="text-dark pb-5">
                         {comicCreators(comic)}
                     </div>
                 </div>

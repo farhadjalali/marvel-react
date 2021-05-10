@@ -5,6 +5,7 @@ import {RootState} from "../../store/state";
 import {CharacterActions} from "../../actions";
 import "./Home.scss"
 import {Spinner} from "../_utils/Spinner";
+import {SpinnerContainer} from "../_utils/SpinnerContainer";
 
 const KEY_ENTER = "Enter";
 
@@ -25,12 +26,11 @@ export default function Home(): JSX.Element {
     }
 
     return heroes.loading && heroes.items.length === 0 ?
-        <div className="home-page spinner-container w-100 d-flex align-items-center justify-content-center flex-grow-1">
-            {/* Loading Spinner */}
+        <SpinnerContainer>
             <Spinner/>
-        </div>
+        </SpinnerContainer>
         :
-        <div className="home-page p-5">
+        <div className="home-page p-4">
             {/* Search input */}
             <div className="search-input-icon"/>
             <input className="search-input w-100 border-0 outline-0 border-bottom mb-3 pl-5 p-2"
@@ -41,11 +41,14 @@ export default function Home(): JSX.Element {
             />
 
             {/* Cards wrapper */}
-            <div className="d-flex flex-wrap justify-content-start">
+            <div className="row">
                 {
                     heroes.items.map(hero =>
-                        <SuperheroCard character={hero}
-                                       key={hero.id}/>)
+                        <div className="col-xl-2 col-lg-3 col-md-4 col-sm-6"
+                             key={hero.id}>
+                            <SuperheroCard character={hero}/>
+                        </div>
+                    )
                 }
             </div>
 
