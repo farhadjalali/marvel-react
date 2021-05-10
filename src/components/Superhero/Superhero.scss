@@ -1,7 +1,9 @@
-.hero-head-thumbnail {
-  width: 200px;
-  height: 200px;
-  object-fit: fill;
-  border-radius: 50%;
-  margin: 10px;
+.superhero-page {
+  .hero-head-thumbnail {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin: 10px;
+  }
 }

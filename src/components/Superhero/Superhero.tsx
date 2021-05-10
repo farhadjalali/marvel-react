@@ -2,22 +2,14 @@ import React, {useEffect, useState} from 'react';
 import {useParams} from 'react-router';
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../reducers/state";
-import {useCharacterActions} from "../../actions";
+import {CharacterActions, useCharacterActions} from "../../actions";
 import {Character, Comic, HeroModel} from "../../types";
 import ComicCard from "./ComicCard/ComicCard";
 import ComicModal from "./ComicModal/ComicModal";
 import "./Superhero.scss";
+import {thumbnailFilename} from "../../utils";
 
-export function SuperheroHead({hero}: { hero: Character }): JSX.Element {
-    return (
-        <div className="bg-dark w-100 d-flex align-items-center justify-content-center">
-            <h1 className="text-white">{hero.name}</h1>
-            <img className="hero-head-thumbnail" src={hero.thumbnail.path + '.' + hero.thumbnail.extension} alt={'thumbnail'}/>
-        </div>
-    );
-}
-
-export default function Superhero(): JSX.Element {
+export default function Superhero(): JSX.Element | null {
     const {id} = useParams<{ id: string }>();
     const characters = useSelector((state: RootState) => state.characters)
     const dispatch = useDispatch();
@@ -35,35 +27,41 @@ export default function Superhero(): JSX.Element {
                 comics: []
             })
         else {
-            // TODO: load by +id
-            dispatch(characterActions.getHeroById);
+            dispatch(CharacterActions.getHeroById(+id));
             setHero(characters.hero)
         }
 
-        dispatch(characterActions.getHeroComics);
+        // Get here comics now
+        dispatch(CharacterActions.getHeroComics(+id));
 
     }, []);
 
+    if (!hero || !hero.current)
+        return null;
+
     return (
-        <div>
-            {
-                hero && hero.current ? <SuperheroHead hero={hero.current}/> : ''
-            }
+        <div className="superhero-page">
+            {/* Head */}
+            <div className="superhero-page-head bg-black p-3 w-100 d-flex align-items-center justify-content-center">
+                <h2 className="text-white px-4">{hero.current.name}</h2>
+                <img className="hero-head-thumbnail" src={thumbnailFilename(hero.current.thumbnail)} alt={'thumbnail'}/>
+            </div>
+            <svg preserveAspectRatio="none" viewBox="0 0 100 6">
+                <polygon points="0,0 100,0 0,6"/>
+            </svg>
 
+            {/* comics cards */}
+            <h2 className="px-4 mt-3 text-secondary">COMICS</h2>
+            <div className="p-2 d-flex flex-wrap">
+                {
+                    characters.hero.comics.map(comic =>
+                        <ComicCard onClick={() => setModalComic(comic)} comic={comic} key={comic.id}/>
+                    )
+                }
+            </div>
+
+            {/* comic modal */}
             <ComicModal comic={modalComic} onHide={() => setModalComic(undefined)}/>
-
-            <h2 className="p-2">COMICS</h2>
-            {/* Super hero comics */}
-            {
-                !hero ? '' :
-                    <div className="p-2 d-flex flex-wrap">
-                        {
-                            characters.hero.comics.map(comic =>
-                                <ComicCard onClick={() => setModalComic(comic)} comic={comic} key={comic.id}/>
-                            )
-                        }
-                    </div>
-            }
         </div>
     );
 }

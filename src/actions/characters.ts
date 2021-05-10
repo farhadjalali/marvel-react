@@ -2,7 +2,7 @@ import {createAction} from 'redux-actions';
 import {useMemo} from "react";
 import {Dispatch, bindActionCreators} from "redux";
 import {fetchCharacterById, fetchCharactersList, fetchComicsByCharacter} from "../apis";
-import {Character, Comic, GetCharactersOptions} from "../types/global";
+import {Character, Comic, GetCharactersOptions} from "../types";
 import {RootState} from "../reducers/state";
 
 export namespace CharacterActions {
@@ -20,80 +20,89 @@ export namespace CharacterActions {
         GET_HERO_COMICS_FAILED = 'GET_HERO_COMICS_FAILED',
     }
 
-    // export const getCharacters = createAction(Type.GET_CHARACTERS);
-    export const getHeroes = (options: GetCharactersOptions) => {
-        return function (dispatch: Dispatch) {
-            dispatch({
-                type: Type.GET_HEROES_REQUEST,
-            });
+    // export const setHeroSearchName = createAction(Type.SET_HERO_SEARCH_NAME);
 
-            fetchCharactersList(options)
-                .then(res => res.json())
-                .then(res => dispatch({
-                        type: Type.GET_HEROES_SUCCESS,
-                        payload: res.data.results as Character[]
-                    })
-                )
-                .catch(err => dispatch({
-                    type: Type.GET_HEROES_FAILED,
-                    payload: err
-                }))
+    /**
+     * Return heroes based on options
+     */
+    export const getHeroes = (options: GetCharactersOptions) => async (dispatch: Dispatch) => {
+        dispatch({
+            type: Type.GET_HEROES_REQUEST,
+        });
+
+        try {
+            const response = await fetchCharactersList(options);
+            const res = await response.json();
+            dispatch({
+                type: Type.GET_HEROES_SUCCESS,
+                payload: res.data.results as Character[]
+            });
+        } catch (err) {
+            dispatch({
+                type: Type.GET_HEROES_FAILED,
+                payload: err
+            });
         }
     }
 
-    export const getMoreHeroes = (dispatch: Dispatch, getState: () => RootState) => {
+    /**
+     * Return heroes next page
+     */
+    export const getMoreHeroes = () => (dispatch: Dispatch, getState: () => RootState) => {
         const state = getState();
-        // Todo: fix this
-        return getHeroes({offset: state.characters.heroes.items.length});
+        return getHeroes({offset: state.characters.heroes.items.length})(dispatch);
     }
 
-    export const getHeroesByNameStart = (dispatch: Dispatch, getState: () => RootState) => {
-        console.log("Search")
-        const state = getState();
-        // Todo: fix this
-        return getHeroes({search: "ma"});
+    /**
+     * Return characters with names that begin with the specified string (e.g. Sp).
+     */
+    export const getHeroesByNameStart = (searchName: string) => async (dispatch: Dispatch) => {
+        return getHeroes({search: searchName})(dispatch);
     }
 
-    export const getHeroById = () => {
-        return function (dispatch: Dispatch) {
+    /**
+     * ASYNC : Return hero by id from API
+     */
+    export const getHeroById = (heroId: number) => async (dispatch: Dispatch) => {
+        dispatch({
+            type: Type.GET_HERO_REQUEST,
+        });
+
+        try {
+            const response = await fetchCharacterById(heroId);
+            const res = await response.json();
             dispatch({
-                type: Type.GET_HERO_REQUEST,
+                type: Type.GET_HERO_SUCCESS,
+                payload: (res.data.results as Character[])[0]
+            })
+        } catch (err) {
+            dispatch({
+                type: Type.GET_HERO_FAILED,
+                payload: err
             });
-
-            // Todo: fix this
-            const id = 1011334
-            fetchCharacterById(id)
-                .then(res => res.json())
-                .then(res => dispatch({
-                        type: Type.GET_HERO_SUCCESS,
-                        payload: (res.data.results as Character[])[0]
-                    })
-                )
-                .catch(err => dispatch({
-                    type: Type.GET_HERO_FAILED,
-                    payload: err
-                }))
         }
     }
 
-    export const getHeroComics = () => {
-        return function (dispatch: Dispatch) {
-            dispatch({
-                type: Type.GET_HERO_COMICS_REQUEST,
-            });
+    /**
+     * Async: Request hero comics
+     */
+    export const getHeroComics = (heroId: number) => async (dispatch: Dispatch) => {
+        dispatch({
+            type: Type.GET_HERO_COMICS_REQUEST,
+        });
 
-            const id = 1011334
-            fetchComicsByCharacter(id)
-                .then(res => res.json())
-                .then(res => dispatch({
-                        type: Type.GET_HERO_COMICS_SUCCESS,
-                        payload: res.data.results as Comic[]
-                    })
-                )
-                .catch(err => dispatch({
-                    type: Type.GET_HERO_COMICS_FAILED,
-                    payload: err
-                }))
+        try {
+            const response = await fetchComicsByCharacter(heroId);
+            const res = await response.json();
+            dispatch({
+                type: Type.GET_HERO_COMICS_SUCCESS,
+                payload: res.data.results as Comic[]
+            });
+        } catch (err) {
+            dispatch({
+                type: Type.GET_HERO_COMICS_FAILED,
+                payload: err
+            })
         }
     }
 }

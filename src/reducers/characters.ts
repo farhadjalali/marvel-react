@@ -1,7 +1,7 @@
 import {handleActions} from 'redux-actions';
 import {RootState} from "./state";
 import {CharacterActions} from "../actions";
-import {Character, Comic} from "../types/global";
+import {Character, Comic} from "../types";
 
 const initialState: RootState.CharactersState = {
     heroes: {
@@ -17,7 +17,9 @@ const initialState: RootState.CharactersState = {
 }
 
 const charactersReducer = handleActions<RootState.CharactersState, any>({
-    // Get Heroes
+    /**
+     * Get Heroes success response
+     */
     [CharacterActions.Type.GET_HEROES_SUCCESS]: (state, action) => {
         return {
             ...state,
@@ -25,6 +27,9 @@ const charactersReducer = handleActions<RootState.CharactersState, any>({
         }
     },
 
+    /**
+     * Get Heroes
+     */
     [CharacterActions.Type.GET_HEROES_REQUEST]: (state) => {
         return {
             ...state,
@@ -36,6 +41,9 @@ const charactersReducer = handleActions<RootState.CharactersState, any>({
         }
     },
 
+    /**
+     * Get Heroes failed
+     */
     [CharacterActions.Type.GET_HEROES_FAILED]: (state) => {
         return {
             ...state,
@@ -43,7 +51,9 @@ const charactersReducer = handleActions<RootState.CharactersState, any>({
         }
     },
 
-    // Get Hero
+    /**
+     * Get hero by id
+     */
     [CharacterActions.Type.GET_HERO_REQUEST]: (state) => {
         return {
             ...state,
@@ -51,6 +61,9 @@ const charactersReducer = handleActions<RootState.CharactersState, any>({
         }
     },
 
+    /**
+     * Get hero by returned successful
+     */
     [CharacterActions.Type.GET_HERO_SUCCESS]: (state, action) => {
         return {
             ...state,
@@ -58,6 +71,9 @@ const charactersReducer = handleActions<RootState.CharactersState, any>({
         }
     },
 
+    /**
+     * Get hero by id failed
+     */
     [CharacterActions.Type.GET_HERO_FAILED]: (state) => {
         return {
             ...state,
@@ -65,7 +81,9 @@ const charactersReducer = handleActions<RootState.CharactersState, any>({
         }
     },
 
-    // Get Hero's Comics
+    /**
+     * Get Hero's Comics
+     */
     [CharacterActions.Type.GET_HERO_COMICS_REQUEST]: (state) => {
         return {
             ...state,
@@ -76,6 +94,9 @@ const charactersReducer = handleActions<RootState.CharactersState, any>({
         }
     },
 
+    /**
+     * Get Hero's Comics returned successfully
+     */
     [CharacterActions.Type.GET_HERO_COMICS_SUCCESS]: (state, action) => {
         return {
             ...state,
@@ -87,6 +108,9 @@ const charactersReducer = handleActions<RootState.CharactersState, any>({
         }
     },
 
+    /**
+     * Get Hero's Comics failed
+     */
     [CharacterActions.Type.GET_HERO_COMICS_FAILED]: (state) => {
         return {
             ...state,

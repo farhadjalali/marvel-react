@@ -1,13 +1,15 @@
-import moment from 'moment';
-import CryptoJS from 'crypto-js';
 import {config} from '../config';
 import urljoin from 'url-join';
 import {GetCharactersOptions} from "../types";
+import {getAuthorizationParams} from "./marvelApi-utility";
 
 const CHARACTERS_API_PREFIX = `characters`;
 const CHARACTERS_COMICS_API_PREFIX = `comics`;
 const CHARACTERS_LOAD_LIMIT = 20
 
+/**
+ * GET /v1/public/characters. fetches lists of comic characters with optional filters
+ * */
 export function fetchCharactersList(options: GetCharactersOptions = {}): Promise<Response> {
     options = {offset: 0, limit: CHARACTERS_LOAD_LIMIT, ...options}
 
@@ -22,22 +24,22 @@ export function fetchCharactersList(options: GetCharactersOptions = {}): Promise
     return fetch(url);
 }
 
+
+/**
+ * GET /v1/public/characters/{characterId}. fetches a single character resource
+ * */
 export function fetchCharacterById(characterId: number): Promise<Response> {
     const params = getAuthorizationParams();
     const url = urljoin(config.baseUrl, CHARACTERS_API_PREFIX, String(characterId), params);
     return fetch(url);
 }
 
+
+/**
+ * GET /v1/public/characters/{characterId}/comics. Fetches lists of comics containing a specific character
+ * */
 export function fetchComicsByCharacter(characterId: number): Promise<Response> {
     const params = getAuthorizationParams();
     const url = urljoin(config.baseUrl, CHARACTERS_API_PREFIX, String(characterId), CHARACTERS_COMICS_API_PREFIX, params);
     return fetch(url);
-}
-
-function getAuthorizationParams(): string {
-    const timeStamp = moment().unix();
-    const hash = CryptoJS.MD5(timeStamp + config.privateKey + config.publicKey)
-        .toString(CryptoJS.enc.Hex);
-
-    return `?apikey=${config.publicKey}&ts=${timeStamp}&hash=${hash}`;
 }

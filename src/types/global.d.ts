@@ -16,6 +16,11 @@ export interface Comic {
     description: string;
     resourceURI: string;
     thumbnail: ImageThumbnail;
+    creators: {
+        items: {
+            name: string
+        }[]
+    }
 }
 
 interface ImageThumbnail {

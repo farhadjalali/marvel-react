@@ -1,6 +1,13 @@
 .comic-card {
   width: 300px;
-  min-width: 200px;
+  min-width: 300px;
   position: relative;
   cursor: pointer;
+
+  img {
+    box-shadow: 0 10px 16px 0 #0004, 0 6px 20px 0 #0003;
+    object-fit: fill;
+    height: 450px;
+    width: 100%;
+  }
 }
