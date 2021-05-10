@@ -2,7 +2,7 @@
 
 ## Component folders
 
-`components` ............................... All react components
+`src/components` ............................... All react components
 * `_utils` ............................... Utility components (e.g. spinner, etc)
 * `App` .................................... root  
 * `Header` ............................... page header
@@ -13,17 +13,21 @@
     * `ComicModal` ................... comic modal
 
 
-## Redux folders
+## Redux folders in 'src'
 * `actions` ............................... actions (marvel actions are mostly async)
 * `middleware` ........................... redux middle-wares (logger, thunk, ...) 
 * `reducers` .............................. redux reducers
 * `store` ................................... Root State + Store object
 
-## Other folders
+## Other folders in 'src'
 * `apis` .................................... API clients
-    * `__tests` ......................... API call unit tests
 * `assets` .................................. Assets (images, ...)
 * `config` .................................. config object (typed config coming from .env or global environment variables)
 * `style` ................................... Scss general styles broken by best practice patterns
 * `types` ................................... Types and models
 * `utils` ................................... Utility functions (e.g. global functions, web vitals, etc)
+
+## Test folders
+* `cypress` .................................... Cypress tests
+    * `integration` ........................ Cypress integration and e2e tests
+* `apis/__tests` ............................. API call unit tests (jest)
